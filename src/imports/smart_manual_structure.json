@@ -1,0 +1,372 @@
+{
+  "meta": {
+    "project_name": "Manual de Usuario SMART",
+    "version": "1.0",
+    "last_updated": "2026-07-02",
+    "colors": {
+      "primary": "#757DE3",
+      "secondary": "#77DEA2",
+      "dark": "#002461",
+      "light_gray": "#F8F8F8",
+      "white": "#FFFFFF",
+      "medium_gray": "#959595"
+    }
+  },
+  "modules": [
+    {
+      "id": "login",
+      "title": "Login y Dashboard",
+      "icon": "shield",
+      "description": "Acceso seguro y panel central de actividades",
+      "features": [
+        "Ingreso con correo corporativo, Google o Microsoft",
+        "Recuperación de contraseña automática",
+        "Dashboard con tarjetas de gestión diaria",
+        "Personalización de interfaz"
+      ],
+      "quick_actions": [
+        {
+          "label": "Iniciar sesión",
+          "type": "primary"
+        },
+        {
+          "label": "Recuperar contraseña",
+          "type": "link"
+        }
+      ]
+    },
+    {
+      "id": "colaboradores",
+      "title": "Colaboradores",
+      "icon": "users",
+      "description": "Gestión integral del personal",
+      "features": [
+        "Registro individual con 4 pestañas",
+        "Carga masiva vía Excel",
+        "Filtros avanzados por múltiples criterios",
+        "Exportación a Excel"
+      ],
+      "quick_actions": [
+        {
+          "label": "Nuevo colaborador",
+          "type": "primary"
+        },
+        {
+          "label": "Carga masiva",
+          "type": "secondary"
+        },
+        {
+          "label": "Exportar reporte",
+          "type": "ghost"
+        }
+      ]
+    },
+    {
+      "id": "vacaciones",
+      "title": "Vacaciones",
+      "icon": "sun",
+      "description": "Monitoreo de días generados, tomados y vencidos",
+      "features": [
+        "Panel con saldo final por colaborador",
+        "Filtro por año/periodo",
+        "Alertas de vencimiento",
+        "Reporte de auditoría"
+      ]
+    },
+    {
+      "id": "asistencia",
+      "title": "Asistencia",
+      "icon": "clock",
+      "description": "Control de marcaciones y regularizaciones",
+      "features": [
+        "Inicio de jornada con un clic",
+        "3 vistas: Todos, Equipo, Solo yo",
+        "10 estados de asistencia",
+        "Regularización de marcas con aprobación"
+      ],
+      "states": [
+        {
+          "name": "Sin marca",
+          "color": "gray"
+        },
+        {
+          "name": "Puntual",
+          "color": "green"
+        },
+        {
+          "name": "Tardanza",
+          "color": "orange"
+        },
+        {
+          "name": "Falta",
+          "color": "red"
+        },
+        {
+          "name": "Permiso",
+          "color": "blue"
+        },
+        {
+          "name": "Vacaciones",
+          "color": "purple"
+        },
+        {
+          "name": "Feriado",
+          "color": "cyan"
+        },
+        {
+          "name": "Fuera de horario",
+          "color": "yellow"
+        },
+        {
+          "name": "Licencia",
+          "color": "indigo"
+        },
+        {
+          "name": "Personal de confianza",
+          "color": "pink"
+        }
+      ]
+    },
+    {
+      "id": "solicitudes",
+      "title": "Solicitudes",
+      "icon": "file-text",
+      "description": "Gestión de permisos, vacaciones, licencias y más",
+      "features": [
+        "5 categorías de solicitudes",
+        "Solicitud masiva (rol dependiente)",
+        "Flujo de aprobación configurado",
+        "Seguimiento por tabs"
+      ],
+      "categories": [
+        {
+          "name": "Permisos",
+          "types": [
+            "Por horas",
+            "Por días"
+          ]
+        },
+        {
+          "name": "Vacaciones",
+          "types": [
+            "Reserva",
+            "Adelanto",
+            "Venta"
+          ]
+        },
+        {
+          "name": "Licencias",
+          "types": [
+            "Sin goce",
+            "Con goce",
+            "Remoto",
+            "Beneficio",
+            "Descanso médico",
+            "Fallecimiento",
+            "Paternidad",
+            "Lactancia",
+            "Maternidad"
+          ]
+        },
+        {
+          "name": "Horas adicionales",
+          "types": [
+            "Recuperación",
+            "Extras",
+            "Compensación",
+            "Avance"
+          ]
+        },
+        {
+          "name": "Descuentos",
+          "types": [
+            "Vencimiento de tolerancia"
+          ]
+        },
+        {
+          "name": "Regularización",
+          "types": [
+            "Registro",
+            "Edición",
+            "Eliminación"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "proyectos",
+      "title": "Proyectos y Requerimientos",
+      "icon": "folder",
+      "description": "Gestión de proyectos, requerimientos y estados",
+      "features": [
+        "Creación con código automático",
+        "Asignación de equipos y líderes",
+        "Control de estados con justificación",
+        "Histórico de cambios inmutable"
+      ]
+    },
+    {
+      "id": "clientes",
+      "title": "Clientes",
+      "icon": "briefcase",
+      "description": "Registro de empresas y coordinadores",
+      "features": [
+        "Alta de empresas con contactos",
+        "Registro de coordinadores con usuario",
+        "Activación/desactivación",
+        "Tipos de teléfono: fijo o celular"
+      ]
+    },
+    {
+      "id": "tareo",
+      "title": "Tareo",
+      "icon": "timer",
+      "description": "Registro de actividades y horas",
+      "features": [
+        "Registro manual con validaciones",
+        "Múltiples filtros de búsqueda",
+        "Reporte de completos e incompletos",
+        "Consolidación de actividades"
+      ]
+    },
+    {
+      "id": "indicadores",
+      "title": "Indicadores",
+      "icon": "bar-chart",
+      "description": "Métricas de desempeño y productividad",
+      "features": [
+        "Balance de horas",
+        "Tareo atrasado",
+        "Marcación extemporánea",
+        "Puntualidad y tardanza",
+        "Ranking de equipos"
+      ]
+    },
+    {
+      "id": "evaluaciones",
+      "title": "Evaluaciones",
+      "icon": "star",
+      "description": "Evaluaciones de desempeño 360°",
+      "features": [
+        "Creación con planillas",
+        "Asignación de participantes",
+        "Seguimiento de progreso",
+        "Resultados con cuadrantes"
+      ]
+    },
+    {
+      "id": "configuraciones",
+      "title": "Configuraciones",
+      "icon": "settings",
+      "description": "Administración de usuarios, roles y catálogos",
+      "features": [
+        "Usuarios y roles con permisos",
+        "Horarios simples y personalizados",
+        "Sedes, cargos y áreas",
+        "Competencias y vigencias"
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "category": "Acceso",
+      "question": "¿Cómo recupero mi contraseña?",
+      "answer": "En login, clic en '¿Has olvidado tu contraseña?', ingresa tu correo corporativo y recibirás un enlace de restablecimiento."
+    },
+    {
+      "category": "Acceso",
+      "question": "¿Puedo usar Google o Microsoft para iniciar sesión?",
+      "answer": "Sí, en la pantalla de login encontrarás los iconos correspondientes. Al hacer clic, completa el formulario que se muestra."
+    },
+    {
+      "category": "Asistencia",
+      "question": "¿Qué significa cada estado de asistencia?",
+      "answer": "Sin marca (no registró), Puntual (correcto), Tardanza (tarde), Falta (sin registro), Permiso (autorizado), Vacaciones, Feriado, Fuera de horario, Licencia, Personal de confianza."
+    },
+    {
+      "category": "Asistencia",
+      "question": "¿Cómo regularizo una marca?",
+      "answer": "Asistencia > Regularizar Marcas > + Nueva Solicitud > + Agregar Nueva Marcación. Completa, verifica y envía. Debe ser aprobada."
+    },
+    {
+      "category": "Solicitudes",
+      "question": "¿Cuánto tarda en aprobarse una solicitud?",
+      "answer": "Depende del aprobador asignado. Puedes verificar el estado en la pestaña correspondiente."
+    },
+    {
+      "category": "Solicitudes",
+      "question": "¿Puedo hacer una solicitud para varios colaboradores?",
+      "answer": "Sí, si tienes rol con permiso 'Todos', tendrás habilitado el botón 'Solicitud Masiva'."
+    },
+    {
+      "category": "Proyectos",
+      "question": "¿Cómo pauso un proyecto?",
+      "answer": "Clic en el botón ESTADO de la fila del proyecto. Justifica el cambio y guarda. El estado cambiará a AMARILLO."
+    },
+    {
+      "category": "Proyectos",
+      "question": "¿Qué pasa si pauso un proyecto?",
+      "answer": "Los colaboradores no podrán cargar horas. Para reactivarlo, debes crear un nuevo requerimiento."
+    },
+    {
+      "category": "Tareo",
+      "question": "¿Qué pasa si no registro mis actividades a tiempo?",
+      "answer": "Se contabilizará como tareo atrasado. A partir de 2 días sin registrar, se suma a los días laborados."
+    },
+    {
+      "category": "Configuraciones",
+      "question": "¿Puedo desactivar un área con colaboradores?",
+      "answer": "No. El sistema bloqueará la acción indicando que tiene usuarios activos asignados."
+    }
+  ],
+  "contact": {
+    "message": "¿Tienes alguna consulta o detectaste un inconveniente?",
+    "email": "equipo.smart@materiagris.pe",
+    "closing": "¡Estamos para ayudarte!"
+  },
+  "design_tokens": {
+    "colors": {
+      "primary": "#757DE3",
+      "secondary": "#77DEA2",
+      "dark": "#002461",
+      "light_gray": "#F8F8F8",
+      "white": "#FFFFFF",
+      "medium_gray": "#959595"
+    },
+    "typography": {
+      "heading": {
+        "size": "24px",
+        "weight": "700",
+        "color": "#002461"
+      },
+      "subheading": {
+        "size": "18px",
+        "weight": "600",
+        "color": "#757DE3"
+      },
+      "body": {
+        "size": "14px",
+        "weight": "400",
+        "color": "#002461"
+      },
+      "caption": {
+        "size": "12px",
+        "weight": "400",
+        "color": "#959595"
+      }
+    },
+    "spacing": {
+      "xs": "4px",
+      "sm": "8px",
+      "md": "16px",
+      "lg": "24px",
+      "xl": "32px"
+    },
+    "border_radius": {
+      "sm": "8px",
+      "md": "12px",
+      "lg": "16px",
+      "full": "9999px"
+    }
+  }
+}
