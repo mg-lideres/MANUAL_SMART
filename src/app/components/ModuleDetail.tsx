@@ -1,5 +1,5 @@
-import { useState, useEffect, useMemo } from "react";
-import { motion } from "motion/react";
+import { useState, useEffect, useMemo, useRef } from "react";
+import { motion, useScroll, useTransform } from "motion/react";
 import { ArrowLeft, ChevronRight, ChevronLeft, Layers, Clock } from "lucide-react";
 import { type Module, modules } from "./smart-data";
 import { moduleContents } from "../../content";
@@ -66,6 +66,43 @@ export function ModuleDetail({ module, onBack, onNavigate }: ModuleDetailProps) 
     return () => window.removeEventListener("scroll", handleScroll);
   }, [module.id]);
 
+  // Collapsing the other sections shifts the layout, so the tab you just
+  // picked can easily land above or below the viewport — bring it into view.
+  // The collapse/expand is CSS-transitioned (~300ms), so we wait for that to
+  // settle before measuring position — otherwise we scroll to where the
+  // heading was mid-animation, not where it ends up.
+  const isFirstRender = useRef(true);
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    if (!activeId) return;
+    const timer = setTimeout(() => {
+      const el = document.getElementById(activeId);
+      if (el) {
+        const y = el.getBoundingClientRect().top + window.scrollY - 90;
+        // Instant, not smooth: a smooth scroll here reliably got interrupted
+        // (landed ~10px from its start instead of the target) — some layout
+        // still settling right after the collapse transition fights with it.
+        window.scrollTo({ top: Math.max(0, y), behavior: "auto" });
+      }
+    }, 320);
+    return () => clearTimeout(timer);
+  }, [activeId]);
+
+  // Parallax for the header's decorative layers: the grid pattern lags behind
+  // the scroll, the glow drifts the opposite way and the icon eases out —
+  // three depths moving at different speeds as the header scrolls past.
+  // Ranges are tight (the header itself is only ~220px tall) so the full
+  // effect plays out while it's still on screen, instead of getting cut off.
+  const { scrollY } = useScroll();
+  const patternY = useTransform(scrollY, [0, 200], [0, 130]);
+  const glowY = useTransform(scrollY, [0, 200], [0, -90]);
+  const glowScale = useTransform(scrollY, [0, 200], [1, 1.5]);
+  const iconY = useTransform(scrollY, [0, 160], [0, 40]);
+  const iconOpacity = useTransform(scrollY, [0, 150], [1, 0]);
+
   return (
     <div style={{ backgroundColor: "#F8F8F8", minHeight: "100vh", paddingTop: "72px" }}>
       {/* Reading progress bar */}
@@ -99,18 +136,24 @@ export function ModuleDetail({ module, onBack, onNavigate }: ModuleDetailProps) 
           overflow: "hidden",
         }}
       >
-        {/* Background pattern */}
-        <div
+        {/* Background pattern — parallax layer 1: lags behind the scroll.
+            Extends above the header so the shift-down never exposes a gap. */}
+        <motion.div
           style={{
             position: "absolute",
-            inset: 0,
+            top: "-150px",
+            left: 0,
+            right: 0,
+            bottom: 0,
             backgroundImage:
               "linear-gradient(rgba(117,125,227,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(117,125,227,0.08) 1px, transparent 1px)",
             backgroundSize: "32px 32px",
             pointerEvents: "none",
+            y: patternY,
           }}
         />
-        <div
+        {/* Glow blob — parallax layer 2: drifts the opposite way and grows */}
+        <motion.div
           style={{
             position: "absolute",
             right: "-40px",
@@ -121,6 +164,8 @@ export function ModuleDetail({ module, onBack, onNavigate }: ModuleDetailProps) 
             backgroundColor: "rgba(117,125,227,0.15)",
             filter: "blur(40px)",
             pointerEvents: "none",
+            y: glowY,
+            scale: glowScale,
           }}
         />
 
@@ -169,7 +214,7 @@ export function ModuleDetail({ module, onBack, onNavigate }: ModuleDetailProps) 
             transition={{ duration: 0.5 }}
             style={{ display: "flex", alignItems: "center", gap: "18px" }}
           >
-            <div
+            <motion.div
               style={{
                 width: "58px",
                 height: "58px",
@@ -180,10 +225,12 @@ export function ModuleDetail({ module, onBack, onNavigate }: ModuleDetailProps) 
                 alignItems: "center",
                 justifyContent: "center",
                 flexShrink: 0,
+                y: iconY,
+                opacity: iconOpacity,
               }}
             >
               <Icon size={26} color="#757DE3" />
-            </div>
+            </motion.div>
             <div>
               <div
                 style={{
