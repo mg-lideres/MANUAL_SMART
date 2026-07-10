@@ -17,7 +17,7 @@ import {
   ChevronDown,
   HelpCircle,
   X,
-  ZoomIn,
+  // ZoomIn,
 } from "lucide-react";
 import { slugify, dedupeSlug } from "../lib/slugify";
 
@@ -305,7 +305,7 @@ function ImageLightbox({ src, alt }: { src?: string; alt?: string }) {
             display: "block",
           }}
         />
-        <span
+        {/* <span
           style={{
             position: "absolute",
             bottom: "10px",
@@ -323,7 +323,7 @@ function ImageLightbox({ src, alt }: { src?: string; alt?: string }) {
         >
           <ZoomIn size={12} />
           Ampliar
-        </span>
+        </span> */}
       </span>
       {alt && (
         <span style={{ display: "block", fontSize: "12px", color: "#959595", marginTop: "6px" }}>

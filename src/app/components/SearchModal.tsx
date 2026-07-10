@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Search, X, ArrowRight, HelpCircle } from "lucide-react";
 import { modules, faqs } from "./smart-data";
-import { moduleContents } from "../../content";
+import { loadModuleContent } from "../../content";
 
 interface SearchResult {
   type: "module" | "faq";
@@ -62,6 +62,22 @@ export function SearchModal({ isOpen, onClose, onNavigateModule, onNavigateFAQ }
   const [selectedIdx, setSelectedIdx] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // Module bodies are code-split; fetch them the first time the search opens
+  // so full-text search works without shipping them in the initial bundle.
+  const [contents, setContents] = useState<Record<string, string>>({});
+  useEffect(() => {
+    if (!isOpen) return;
+    let cancelled = false;
+    Promise.all(
+      modules.map(async (m) => [m.id, await loadModuleContent(m.id)] as const)
+    ).then((entries) => {
+      if (!cancelled) setContents(Object.fromEntries(entries));
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [isOpen]);
+
   useEffect(() => {
     if (isOpen) {
       setQuery("");
@@ -75,7 +91,7 @@ export function SearchModal({ isOpen, onClose, onNavigateModule, onNavigateFAQ }
         ...modules
           .filter((m) => {
             const q = query.toLowerCase();
-            const content = moduleContents[m.id] || "";
+            const content = contents[m.id] || "";
             return (
               m.title.toLowerCase().includes(q) ||
               m.description.toLowerCase().includes(q) ||

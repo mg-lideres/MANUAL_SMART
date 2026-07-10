@@ -2,34 +2,37 @@
 // Do not edit manually.
 
 import introSource from './intro.md?raw';
-import loginSource from './login.md?raw';
-import colaboradoresSource from './colaboradores.md?raw';
-import vacacionesSource from './vacaciones.md?raw';
-import asistenciaSource from './asistencia.md?raw';
-import solicitudesSource from './solicitudes.md?raw';
-import notificacionesSource from './notificaciones.md?raw';
-import proyectosSource from './proyectos.md?raw';
-import clientesSource from './clientes.md?raw';
-import tareoSource from './tareo.md?raw';
-import indicadoresSource from './indicadores.md?raw';
-import evaluacionesSource from './evaluaciones.md?raw';
-import configuracionesSource from './configuraciones.md?raw';
 import faqsSource from './faqs.md?raw';
 
 export const introContent = introSource;
 export const faqContent = faqsSource;
 
-export const moduleContents: Record<string, string> = {
-  login: loginSource,
-  colaboradores: colaboradoresSource,
-  vacaciones: vacacionesSource,
-  asistencia: asistenciaSource,
-  solicitudes: solicitudesSource,
-  notificaciones: notificacionesSource,
-  proyectos: proyectosSource,
-  clientes: clientesSource,
-  tareo: tareoSource,
-  indicadores: indicadoresSource,
-  evaluaciones: evaluacionesSource,
-  configuraciones: configuracionesSource,
+// Module bodies embed their screenshots as base64 (several MB in total), so
+// they are code-split via dynamic import and fetched on demand instead of
+// shipping in the main bundle.
+const moduleLoaders: Record<string, () => Promise<string>> = {
+  login: () => import('./login.md?raw').then((m) => m.default),
+  colaboradores: () => import('./colaboradores.md?raw').then((m) => m.default),
+  vacaciones: () => import('./vacaciones.md?raw').then((m) => m.default),
+  asistencia: () => import('./asistencia.md?raw').then((m) => m.default),
+  solicitudes: () => import('./solicitudes.md?raw').then((m) => m.default),
+  notificaciones: () => import('./notificaciones.md?raw').then((m) => m.default),
+  proyectos: () => import('./proyectos.md?raw').then((m) => m.default),
+  clientes: () => import('./clientes.md?raw').then((m) => m.default),
+  tareo: () => import('./tareo.md?raw').then((m) => m.default),
+  indicadores: () => import('./indicadores.md?raw').then((m) => m.default),
+  evaluaciones: () => import('./evaluaciones.md?raw').then((m) => m.default),
+  configuraciones: () => import('./configuraciones.md?raw').then((m) => m.default),
 };
+
+const loaded = new Map<string, string>();
+
+export async function loadModuleContent(id: string): Promise<string> {
+  const cached = loaded.get(id);
+  if (cached !== undefined) return cached;
+  const loader = moduleLoaders[id];
+  if (!loader) return '';
+  const content = await loader();
+  loaded.set(id, content);
+  return content;
+}

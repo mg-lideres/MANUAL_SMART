@@ -550,7 +550,7 @@ y redirigirá al listado principal, al hacer clic en desactivar sede, mostrará 
 
 ![][image285]
 
-## **Submódulo: Plantilla de contratos (pendiente de elaborar)** {#submódulo:-plantilla-de-contratos-(pendiente-de-elaborar)}
+<!-- ## **Submódulo: Plantilla de contratos (pendiente de elaborar)** {#submódulo:-plantilla-de-contratos-(pendiente-de-elaborar)} -->
 
 ## **Submódulo: Colaboradores/Cargos** {#submódulo:-colaboradores/cargos}
 
