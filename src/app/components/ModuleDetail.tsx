@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { ArrowLeft, ChevronRight, ChevronLeft, Layers, Clock } from "lucide-react";
 import { type Module, modules } from "./smart-data";
-import { moduleContents } from "../../content";
+import { loadModuleContent } from "../../content";
 import { MarkdownContent } from "./MarkdownContent";
 import { ModuleTOC, extractSections } from "./ModuleTOC";
 
@@ -19,9 +19,21 @@ export function ModuleDetail({ module, onBack, onNavigate }: ModuleDetailProps) 
   const prevModule = currentIndex > 0 ? modules[currentIndex - 1] : null;
   const nextModule = currentIndex < modules.length - 1 ? modules[currentIndex + 1] : null;
 
-  const rawContent = moduleContents[module.id] || "";
+  // Content is code-split per module and fetched on demand (it's several MB
+  // of markdown with embedded screenshots), so it arrives asynchronously.
+  const [rawContent, setRawContent] = useState<string | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    loadModuleContent(module.id).then((c) => {
+      if (!cancelled) setRawContent(c);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [module.id]);
+
   // The module title is already shown in the page header; skip the markdown H1.
-  const content = rawContent.replace(/^# .*\n+/, "");
+  const content = (rawContent ?? "").replace(/^# .*\n+/, "");
   const Icon = module.icon;
 
   const h2Ids = useMemo(
@@ -29,10 +41,17 @@ export function ModuleDetail({ module, onBack, onNavigate }: ModuleDetailProps) 
     [content]
   );
 
-  // App.tsx keys ModuleDetail by module id, so this fully remounts (and this
-  // lazy initializer re-runs) whenever the user navigates to a different module.
-  const [activeId, setActiveId] = useState(() => h2Ids[0] ?? "");
+  // App.tsx keys ModuleDetail by module id, so this fully remounts whenever
+  // the user navigates to a different module. The content loads async, so the
+  // first section becomes active once the headings are available.
+  const [activeId, setActiveId] = useState("");
   const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    if (h2Ids.length > 0 && !h2Ids.includes(activeId)) {
+      setActiveId(h2Ids[0]);
+    }
+  }, [h2Ids, activeId]);
 
   // Only the active section's content is expanded — the rest of the module
   // stays a tap away in the sidebar instead of one long scroll.
@@ -73,11 +92,14 @@ export function ModuleDetail({ module, onBack, onNavigate }: ModuleDetailProps) 
   // heading was mid-animation, not where it ends up.
   const isFirstRender = useRef(true);
   useEffect(() => {
+    // Skip while content hasn't loaded, and consume the first-render flag only
+    // when activeId gets its initial real value — the auto-scroll should only
+    // fire on user-initiated section changes.
+    if (!activeId) return;
     if (isFirstRender.current) {
       isFirstRender.current = false;
       return;
     }
-    if (!activeId) return;
     const timer = setTimeout(() => {
       const el = document.getElementById(activeId);
       if (el) {
@@ -300,7 +322,13 @@ export function ModuleDetail({ module, onBack, onNavigate }: ModuleDetailProps) 
               boxShadow: "0 2px 14px rgba(0,36,97,0.05)",
             }}
           >
-            <MarkdownContent content={content} openMap={openMap} onToggleSection={setActiveId} />
+            {rawContent === null ? (
+              <div style={{ padding: "48px 0", textAlign: "center", color: "#959595", fontSize: "14px" }}>
+                Cargando contenido…
+              </div>
+            ) : (
+              <MarkdownContent content={content} openMap={openMap} onToggleSection={setActiveId} />
+            )}
           </motion.div>
         </div>
 

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { Search, Menu, X, Zap } from "lucide-react";
+import { Search, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import logo from "@/assets/logo_oscuro.svg";
 
 interface NavbarProps {
   currentView: string;
@@ -81,14 +82,14 @@ export function Navbar({ currentView, onNavigate, onOpenSearch }: NavbarProps) {
               width: "36px",
               height: "36px",
               borderRadius: "10px",
-              backgroundColor: "#757DE3",
+              backgroundColor: "#fff",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               flexShrink: 0,
             }}
           >
-            <Zap size={20} color="#fff" fill="#fff" />
+            <img src={logo} alt="Logo SMART" style={{ width: "24px", height: "24px" }} />
           </div>
           <span
             style={{

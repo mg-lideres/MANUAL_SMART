@@ -7,7 +7,7 @@ interface ModulesGridProps {
   onSelectModule: (id: string) => void;
 }
 
-export function ModulesGrid({ modules, onSelectModule }: ModulesGridProps) {
+export function ModulesGrid({ modules, onSelectModule }: Readonly<ModulesGridProps>) {
   return (
     <section
       id="modules-section"
@@ -89,6 +89,8 @@ export function ModulesGrid({ modules, onSelectModule }: ModulesGridProps) {
                   position: "relative",
                   overflow: "hidden",
                   transition: "box-shadow 0.3s, border-color 0.3s",
+                  display: "flex",
+                  flexDirection: "column",
                 }}
               >
                 {/* Background accent */}
@@ -109,11 +111,11 @@ export function ModulesGrid({ modules, onSelectModule }: ModulesGridProps) {
                 <div
                   style={{
                     position: "absolute",
-                    bottom: "16px",
+                    top: "20px",
                     right: "20px",
                     fontSize: "36px",
                     fontWeight: 800,
-                    color: "rgba(117,125,227,0.06)",
+                    color: "rgba(117,125,227,0.1)",
                     lineHeight: 1,
                     userSelect: "none",
                   }}
@@ -161,7 +163,8 @@ export function ModulesGrid({ modules, onSelectModule }: ModulesGridProps) {
                   {mod.description}
                 </p>
 
-                {/* CTA */}
+                {/* CTA — marginTop auto pins it to the card's bottom edge so
+                    every card in a row aligns it regardless of text length */}
                 <div
                   style={{
                     display: "flex",
@@ -171,6 +174,7 @@ export function ModulesGrid({ modules, onSelectModule }: ModulesGridProps) {
                     color: "#757DE3",
                     fontSize: "12px",
                     fontWeight: 600,
+                    marginTop: "auto",
                   }}
                 >
                   Ver módulo

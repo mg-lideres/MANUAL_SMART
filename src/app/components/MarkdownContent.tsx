@@ -4,6 +4,16 @@ import ReactMarkdown, { defaultUrlTransform } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { remarkRehypeWrap } from "remark-rehype-wrap";
 
+function transformImageUrl(url: string) {
+  if (url.startsWith("data:")) return url;
+  // Handle /assets/ paths with proper base resolution
+  if (url.startsWith("/assets/")) {
+    const base = import.meta.env.BASE_URL;
+    return base + url.slice(1); // Remove leading slash since base may end with /
+  }
+  return url;
+}
+
 function allowDataUrl(url: string) {
   if (url.startsWith("data:")) return url;
   return defaultUrlTransform(url);
@@ -17,7 +27,7 @@ import {
   ChevronDown,
   HelpCircle,
   X,
-  ZoomIn,
+  // ZoomIn,
 } from "lucide-react";
 import { slugify, dedupeSlug } from "../lib/slugify";
 
@@ -305,7 +315,7 @@ function ImageLightbox({ src, alt }: { src?: string; alt?: string }) {
             display: "block",
           }}
         />
-        <span
+        {/* <span
           style={{
             position: "absolute",
             bottom: "10px",
@@ -323,7 +333,7 @@ function ImageLightbox({ src, alt }: { src?: string; alt?: string }) {
         >
           <ZoomIn size={12} />
           Ampliar
-        </span>
+        </span> */}
       </span>
       {alt && (
         <span style={{ display: "block", fontSize: "12px", color: "#959595", marginTop: "6px" }}>
@@ -654,7 +664,7 @@ export function MarkdownContent({ content, openMap = EMPTY_OPEN_MAP, onToggleSec
               </a>
             );
           },
-          img: ({ src, alt }) => <ImageLightbox src={typeof src === "string" ? src : undefined} alt={alt} />,
+          img: ({ src, alt }) => <ImageLightbox src={typeof src === "string" ? transformImageUrl(src) : undefined} alt={alt} />,
           table: ({ children }) => (
             <div
               style={{
